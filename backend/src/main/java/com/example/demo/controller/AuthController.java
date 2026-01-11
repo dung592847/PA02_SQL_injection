@@ -17,12 +17,12 @@ public class AuthController {
     private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public org.springframework.http.ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         User user = userRepository.findByUsername(loginRequest.getUsername());
         if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            return "Login successful! Welcome " + user.getName();
+            return org.springframework.http.ResponseEntity.ok(user);
         }
-        return "Invalid credentials";
+        return org.springframework.http.ResponseEntity.badRequest().body("Invalid credentials");
     }
 
     public static class LoginRequest {

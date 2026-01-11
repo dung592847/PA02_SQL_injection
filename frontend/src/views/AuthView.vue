@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const isLogin = ref(true)
 const message = ref('')
@@ -37,12 +40,18 @@ const handleLogin = async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(loginData.value)
     })
-    const text = await response.text()
-    
-    if (response.ok && !text.toLowerCase().includes("invalid")) {
+    if (response.ok) {
+        const userData = await response.json()
+        localStorage.setItem('user', JSON.stringify(userData))
+        
         isError.value = false
-        message.value = text
+        message.value = 'Login successful! Redirecting...'
+        
+        setTimeout(() => {
+            router.push('/profile')
+        }, 1000)
     } else {
+        const text = await response.text()
         isError.value = true
         message.value = text || 'Login failed'
     }

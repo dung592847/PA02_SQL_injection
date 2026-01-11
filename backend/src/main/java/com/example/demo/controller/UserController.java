@@ -28,4 +28,17 @@ public class UserController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+        return userRepository.findById(id).map(user -> {
+            user.setName(userDetails.getName());
+            user.setEmail(userDetails.getEmail());
+            user.setUsername(userDetails.getUsername());
+            if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+                user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+            }
+            return userRepository.save(user);
+        }).orElse(null);
+    }
 }
