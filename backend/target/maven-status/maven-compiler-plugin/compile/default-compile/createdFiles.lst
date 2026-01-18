@@ -5,5 +5,4 @@ com\example\demo\entity\User.class
 com\example\demo\controller\AuthController.class
 com\example\demo\config\SecurityConfig$1.class
 com\example\demo\controller\UserController.class
-com\example\demo\config\DataLoader.class
 com\example\demo\repository\UserRepository.class
